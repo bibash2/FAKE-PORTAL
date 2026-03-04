@@ -1,0 +1,6 @@
+node_modules/
+uploads/
+data/*.json
+!data/seed-invoices.js
+!data/seed-carriers.js
+.vercel/

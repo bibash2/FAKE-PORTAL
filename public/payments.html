@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CassPort - Upcoming Payments</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <nav class="top-navbar">
+    <div class="navbar-brand" onclick="location.href='payments.html'">
+      <svg viewBox="0 0 220 50" class="nav-logo">
+        <text x="5" y="30" font-family="Georgia, serif" font-size="22" fill="white" font-style="italic">Cass</text>
+        <text x="68" y="37" font-family="Arial Black, sans-serif" font-size="30" fill="white" font-weight="900">Port</text>
+        <circle cx="164" cy="36" r="3" fill="none" stroke="white" stroke-width="1"/>
+      </svg>
+    </div>
+    <ul class="navbar-nav">
+      <li class="active"><a href="payments.html">Upcoming Payments</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="reporting.html">Standard Reporting ▾</a></li>
+      <li><a href="carriers.html">All Carriers</a></li>
+      <li><a href="authorization.html">Freight Bill Auth</a></li>
+      <li><a href="invoices.html">Invoice Details</a></li>
+      <li><a href="upload.html">Invoice Upload</a></li>
+    </ul>
+    <div class="navbar-right">
+      <span class="nav-icon" title="Help">&#9432;</span>
+      <span class="nav-icon" title="Messages">&#9993;</span>
+      <div class="user-menu">
+        <div class="user-avatar">FR</div>
+        <span>FRANKLIN RODRIGUEZ ▾</span>
+      </div>
+    </div>
+  </nav>
+
+  <aside class="sidebar">
+    <ul class="sidebar-nav">
+      <li><a href="payments.html" class="active"><span class="icon">&#8962;</span></a></li>
+      <li><a href="dashboard.html"><span class="icon">&#9776;</span></a></li>
+      <li><a href="upload.html"><span class="icon">&#128196;</span></a></li>
+      <li><a href="invoices.html"><span class="icon">&#128451;</span></a></li>
+      <li><a href="#" onclick="document.getElementById('searchModal').style.display='flex'"><span class="icon">&#128269;</span></a></li>
+    </ul>
+  </aside>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1>Upcoming Payments</h1>
+        <div class="breadcrumb">Home / <a href="payments.html">Upcoming Payments</a></div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span style="font-size:12px;color:#555">Dashboard List</span>
+        <select class="form-control" style="width:160px" id="dashboardList">
+          <option>Upcoming Payments</option>
+          <option>Payment Summary</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Date Range Selector -->
+    <div class="panel">
+      <div class="panel-body" style="padding:16px 20px">
+        <div style="margin-bottom:12px">
+          <label class="form-label">Select date range...</label>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:16px;align-items:center">
+          <button class="btn btn-secondary btn-sm date-range-btn" data-days="180">&lt; 180 Days</button>
+          <button class="btn btn-primary btn-sm date-range-btn active" data-days="90">&lt; 90 Days</button>
+          <button class="btn btn-secondary btn-sm date-range-btn" data-days="30">&lt; 30 Days</button>
+          <button class="btn btn-secondary btn-sm" onclick="document.getElementById('customDateRange').style.display='flex'">Set Date...</button>
+        </div>
+        <div id="customDateRange" style="display:none;gap:12px;margin-bottom:16px;align-items:center">
+          <input type="date" class="form-control" style="width:160px" id="startDate">
+          <span>to</span>
+          <input type="date" class="form-control" style="width:160px" id="endDate">
+          <button class="btn btn-primary btn-sm" onclick="loadPayments()">Apply</button>
+        </div>
+
+        <div class="form-inline" style="gap:16px;flex-wrap:wrap">
+          <div style="flex:1;min-width:200px">
+            <label class="form-label">Select shipper(s)...</label>
+            <select class="form-control" id="shipperFilter">
+              <option value="">All Shippers</option>
+              <option value="AHLSTROM MOVERS" selected>AHLSTROM MOVERS</option>
+              <option value="GLOBAL INDUSTRIES">GLOBAL INDUSTRIES</option>
+              <option value="SUMMIT LLC">SUMMIT LLC</option>
+            </select>
+          </div>
+          <div style="flex:1;min-width:150px">
+            <label class="form-label">Select currency...</label>
+            <select class="form-control" id="currencyFilter">
+              <option>Select...</option>
+              <option selected>USD</option>
+            </select>
+          </div>
+          <div style="flex:1;min-width:150px">
+            <label class="form-label">Select date type...</label>
+            <select class="form-control" id="dateTypeFilter">
+              <option value="paidDate" selected>Paid Date</option>
+              <option value="shipDate">Ship Date</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment Data -->
+    <div class="grid-2" style="align-items:start">
+      <div>
+        <!-- Payment Table -->
+        <div class="panel">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Amount Paid</th>
+                <th>Cumulative Sum</th>
+              </tr>
+            </thead>
+            <tbody id="paymentTableBody">
+              <tr><td colspan="3" style="text-align:center;padding:20px;color:#777">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Spend Chart -->
+        <div class="panel">
+          <div class="panel-header"><h2>Amount (Paid)</h2></div>
+          <div class="panel-body">
+            <div class="chart-container" id="paymentChart" style="height:200px"></div>
+            <div style="display:flex;gap:16px;margin-top:8px;font-size:11px;color:#777">
+              <span><span style="display:inline-block;width:12px;height:12px;background:#4a9af5;border-radius:2px;margin-right:4px;vertical-align:middle"></span>Amount (Paid)</span>
+              <span><span style="display:inline-block;width:12px;height:12px;background:#27ae60;border-radius:2px;margin-right:4px;vertical-align:middle"></span>Cumulative Sum (Paid)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <!-- Total Amount -->
+        <div class="panel" style="margin-bottom:24px">
+          <div class="panel-body" style="text-align:center;padding:24px">
+            <div id="totalAmount" style="font-size:32px;font-weight:700;color:#1a2332">$0</div>
+            <div style="font-size:12px;color:#777;margin-top:4px">Total Amt</div>
+          </div>
+        </div>
+
+        <!-- Top 5 Shippers (Paid) -->
+        <div class="panel" style="margin-bottom:24px">
+          <div class="panel-header"><h2>Top 5 Shippers (Paid)</h2></div>
+          <div class="panel-body" id="topShippersPaid">
+            <div style="text-align:center;padding:20px;color:#777">Loading...</div>
+          </div>
+        </div>
+
+        <!-- Top 5 Shippers (Volume) -->
+        <div class="panel">
+          <div class="panel-header"><h2>Top 5 Shippers (Volume)</h2></div>
+          <div class="panel-body" id="topShippersVolume">
+            <div style="text-align:center;padding:20px;color:#777">Loading...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="searchModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:2000;align-items:center;justify-content:center">
+    <div style="background:white;border-radius:8px;padding:24px;width:400px">
+      <h3 style="margin-bottom:16px">Search</h3>
+      <input type="text" class="form-control" placeholder="Search invoices, carriers..." autofocus>
+      <div style="margin-top:12px;text-align:right">
+        <button class="btn btn-secondary" onclick="document.getElementById('searchModal').style.display='none'">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="portal-footer">
+    Copyright &copy; 2026 - Cass Information Systems, Inc. |
+    <a href="#">Privacy Policy</a> |
+    <a href="#">System Requirements</a> |
+    <a href="#">Transportation Indexes</a> |
+    <a href="#">Shipper Support</a> |
+    <a href="#">Carrier Support</a> |
+    <a href="#">Carrier Electronic Payments</a>
+    <span style="float:right">Search/CassPort v4.1.25425.5</span>
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script>
+    let currentDays = 90;
+
+    document.querySelectorAll('.date-range-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.date-range-btn').forEach(b => {
+          b.classList.remove('btn-primary');
+          b.classList.add('btn-secondary');
+          b.classList.remove('active');
+        });
+        this.classList.remove('btn-secondary');
+        this.classList.add('btn-primary', 'active');
+        currentDays = parseInt(this.dataset.days);
+        loadPayments();
+      });
+    });
+
+    loadPayments();
+
+    async function loadPayments() {
+      try {
+        const shipper = document.getElementById('shipperFilter').value;
+        const params = new URLSearchParams({ days: currentDays });
+        if (shipper) params.set('shipper', shipper);
+
+        const res = await fetch(`/api/payments/upcoming?${params}`);
+        const data = await res.json();
+
+        document.getElementById('totalAmount').textContent =
+          '$' + data.totalAmt.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+
+        renderPaymentTable(data.payments);
+        renderPaymentChart(data.payments);
+        renderTopShippers(data.topShippersPaid, 'topShippersPaid', '#27ae60', 'amount');
+        renderTopShippers(data.topShippersVolume, 'topShippersVolume', '#4a9af5', 'count');
+      } catch (e) {
+        console.error('Failed to load payments:', e);
+      }
+    }
+
+    function renderPaymentTable(payments) {
+      const body = document.getElementById('paymentTableBody');
+      if (!payments.length) {
+        body.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:20px;color:#777">No payment data</td></tr>';
+        return;
+      }
+      body.innerHTML = payments.map(p => `
+        <tr>
+          <td>${new Date(p.date).toLocaleDateString()}</td>
+          <td>$${p.amount.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
+          <td>$${p.cumulative.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
+        </tr>
+      `).join('');
+    }
+
+    function renderPaymentChart(payments) {
+      const chart = document.getElementById('paymentChart');
+      if (!payments.length) { chart.innerHTML = '<div style="text-align:center;padding:40px;color:#777">No data</div>'; return; }
+      const max = Math.max(...payments.map(p => p.amount));
+      chart.innerHTML = '';
+      payments.forEach((p, i) => {
+        const bar = document.createElement('div');
+        bar.className = 'chart-bar';
+        bar.style.height = Math.max(10, (p.amount / max * 180)) + 'px';
+        bar.style.background = 'linear-gradient(to top, #3a7bd5, #5a95e5)';
+        bar.title = `${p.date}: $${p.amount.toLocaleString()}`;
+        chart.appendChild(bar);
+      });
+    }
+
+    function renderTopShippers(shippers, containerId, color, field) {
+      const container = document.getElementById(containerId);
+      if (!shippers.length) { container.innerHTML = '<div style="text-align:center;padding:20px;color:#777">No data</div>'; return; }
+      const max = Math.max(...shippers.map(s => s[field]));
+      container.innerHTML = shippers.map(s => {
+        const pct = (s[field] / max * 100);
+        const label = field === 'amount' ? '$' + s[field].toLocaleString(undefined, {minimumFractionDigits:2}) : s[field] + ' bills';
+        return `
+          <div style="margin-bottom:12px">
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+              <span>${s.name}</span>
+              <span style="font-weight:600">${label}</span>
+            </div>
+            <div style="background:#eee;border-radius:4px;height:24px;overflow:hidden">
+              <div style="background:${color};height:100%;width:${pct}%;border-radius:4px;transition:width 0.5s"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    document.getElementById('shipperFilter').addEventListener('change', loadPayments);
+  </script>
+</body>
+</html>

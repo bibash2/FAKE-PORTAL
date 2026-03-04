@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CassPort - Freight Bill Authorization</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- TOP NAVBAR -->
+  <nav class="top-navbar">
+    <div class="navbar-brand" onclick="location.href='dashboard.html'">
+      <svg viewBox="0 0 220 50" class="nav-logo">
+        <text x="5" y="30" font-family="Georgia, serif" font-size="22" fill="white" font-style="italic">Cass</text>
+        <text x="68" y="37" font-family="Arial Black, sans-serif" font-size="30" fill="white" font-weight="900">Port</text>
+        <circle cx="164" cy="36" r="3" fill="none" stroke="white" stroke-width="1"/>
+      </svg>
+    </div>
+    <ul class="navbar-nav">
+      <li><a href="payments.html">Upcoming Payments</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="reporting.html">Standard Reporting</a></li>
+      <li><a href="carriers.html">All Carriers</a></li>
+      <li class="active"><a href="authorization.html">Freight Bill Auth</a></li>
+      <li><a href="invoices.html">Invoice Details</a></li>
+      <li><a href="upload.html">Invoice Upload</a></li>
+    </ul>
+    <div class="navbar-right">
+      <span class="nav-icon" title="Help">&#9432;</span>
+      <span class="nav-icon" title="Messages">&#9993;</span>
+      <div class="user-menu">
+        <div class="user-avatar">FR</div>
+        <span>FRANKLIN RODRIGUEZ ▾</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <ul class="sidebar-nav">
+      <li><a href="payments.html"><span class="icon">&#8962;</span></a></li>
+      <li><a href="dashboard.html"><span class="icon">&#9776;</span></a></li>
+      <li><a href="upload.html"><span class="icon">&#128196;</span></a></li>
+      <li><a href="invoices.html"><span class="icon">&#128451;</span></a></li>
+      <li><a href="#" onclick="document.getElementById('searchModal').style.display='flex'"><span class="icon">&#128269;</span></a></li>
+    </ul>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1>Freight Bill Authorization</h1>
+        <div class="breadcrumb">Home / <a href="authorization.html">Freight Bill Authorization</a></div>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="tabs" style="border:none;margin:0">
+          <div class="tab active" onclick="switchAuthTab(this,'outstanding')">Outstanding Rejects (14)</div>
+          <div class="tab" onclick="switchAuthTab(this,'resolved')">Resolved Rejects (87)</div>
+          <div class="tab" onclick="switchAuthTab(this,'authorized')">Authorized Bills (1,247)</div>
+        </div>
+      </div>
+
+      <!-- Shipper Selection -->
+      <div class="filter-bar">
+        <label>Shipper:</label>
+        <select class="form-control" style="width:220px">
+          <option>All Shippers</option>
+          <option selected>ACME Corp (001-45892)</option>
+          <option>Global Industries (001-67234)</option>
+          <option>Summit LLC (001-89012)</option>
+        </select>
+        <label>Date Range:</label>
+        <input type="date" class="form-control" style="width:140px" value="2026-02-01">
+        <span style="color:#777">to</span>
+        <input type="date" class="form-control" style="width:140px" value="2026-03-04">
+        <button class="btn btn-primary btn-sm">Run</button>
+      </div>
+
+      <!-- Outstanding Rejects Table -->
+      <div id="tab-outstanding">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th><input type="checkbox"></th>
+              <th>Pro Number</th>
+              <th>Carrier</th>
+              <th>Shipper</th>
+              <th>Reject Code</th>
+              <th>Reject Reason</th>
+              <th>Original Amount</th>
+              <th>Carrier Amount</th>
+              <th>Difference</th>
+              <th>Reject Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="checkbox"></td>
+              <td style="color:#4a9af5;cursor:pointer">784521372</td>
+              <td>Schneider National</td>
+              <td>ACME Corp</td>
+              <td><span class="badge badge-danger">RC-04</span></td>
+              <td>Rate Discrepancy</td>
+              <td>$4,750.00</td>
+              <td>$5,120.00</td>
+              <td style="color:#e74c3c">$370.00</td>
+              <td>03/02/2026</td>
+              <td>
+                <button class="btn btn-success btn-sm">Approve</button>
+                <button class="btn btn-danger btn-sm">Reject</button>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox"></td>
+              <td style="color:#4a9af5;cursor:pointer">784521380</td>
+              <td>ABF Freight</td>
+              <td>ACME Corp</td>
+              <td><span class="badge badge-danger">RC-02</span></td>
+              <td>Duplicate Invoice</td>
+              <td>$1,240.00</td>
+              <td>$1,240.00</td>
+              <td>$0.00</td>
+              <td>03/01/2026</td>
+              <td>
+                <button class="btn btn-success btn-sm">Approve</button>
+                <button class="btn btn-danger btn-sm">Reject</button>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox"></td>
+              <td style="color:#4a9af5;cursor:pointer">784521385</td>
+              <td>UPS Freight</td>
+              <td>ACME Corp</td>
+              <td><span class="badge badge-danger">RC-07</span></td>
+              <td>Missing BOL</td>
+              <td>$2,890.50</td>
+              <td>$2,890.50</td>
+              <td>$0.00</td>
+              <td>02/28/2026</td>
+              <td>
+                <button class="btn btn-success btn-sm">Approve</button>
+                <button class="btn btn-danger btn-sm">Reject</button>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox"></td>
+              <td style="color:#4a9af5;cursor:pointer">784521389</td>
+              <td>FedEx Freight</td>
+              <td>ACME Corp</td>
+              <td><span class="badge badge-danger">RC-01</span></td>
+              <td>Weight Discrepancy</td>
+              <td>$1,580.00</td>
+              <td>$1,820.00</td>
+              <td style="color:#e74c3c">$240.00</td>
+              <td>02/27/2026</td>
+              <td>
+                <button class="btn btn-success btn-sm">Approve</button>
+                <button class="btn btn-danger btn-sm">Reject</button>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox"></td>
+              <td style="color:#4a9af5;cursor:pointer">784521392</td>
+              <td>XPO Logistics</td>
+              <td>ACME Corp</td>
+              <td><span class="badge badge-danger">RC-04</span></td>
+              <td>Rate Discrepancy</td>
+              <td>$3,200.00</td>
+              <td>$3,450.00</td>
+              <td style="color:#e74c3c">$250.00</td>
+              <td>02/26/2026</td>
+              <td>
+                <button class="btn btn-success btn-sm">Approve</button>
+                <button class="btn btn-danger btn-sm">Reject</button>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox"></td>
+              <td style="color:#4a9af5;cursor:pointer">784521395</td>
+              <td>Old Dominion</td>
+              <td>ACME Corp</td>
+              <td><span class="badge badge-danger">RC-05</span></td>
+              <td>Accessorial Charge</td>
+              <td>$890.00</td>
+              <td>$1,140.00</td>
+              <td style="color:#e74c3c">$250.00</td>
+              <td>02/25/2026</td>
+              <td>
+                <button class="btn btn-success btn-sm">Approve</button>
+                <button class="btn btn-danger btn-sm">Reject</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="padding:12px 20px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid #eee">
+          <span style="font-size:12px;color:#777">Showing 1-6 of 14 outstanding rejects | Total difference: <strong style="color:#e74c3c">$1,110.00</strong></span>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-success btn-sm">✅ Approve Selected</button>
+            <button class="btn btn-danger btn-sm">❌ Reject Selected</button>
+            <button class="btn btn-secondary btn-sm">📥 Export</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resolved Rejects (hidden by default) -->
+      <div id="tab-resolved" class="hidden">
+        <div class="panel-body" style="text-align:center;padding:40px;color:#777">
+          <p style="font-size:16px;margin-bottom:8px">87 Resolved Rejects</p>
+          <p style="font-size:13px">Click "Run" to load resolved reject data for the selected date range.</p>
+        </div>
+      </div>
+
+      <!-- Authorized Bills (hidden by default) -->
+      <div id="tab-authorized" class="hidden">
+        <div class="panel-body" style="text-align:center;padding:40px;color:#777">
+          <p style="font-size:16px;margin-bottom:8px">1,247 Authorized Bills</p>
+          <p style="font-size:13px">Click "Run" to load authorized bill data for the selected date range.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- REJECT DETAIL MODAL PREVIEW -->
+    <div class="panel" style="margin-top:24px">
+      <div class="panel-header">
+        <h2>Reject Detail - Pro #784521372</h2>
+        <button class="btn btn-secondary btn-sm">🖼️ View Bill Image</button>
+      </div>
+      <div class="panel-body">
+        <div class="grid-2">
+          <div>
+            <table class="data-table">
+              <tbody>
+                <tr><td style="font-weight:600;width:40%">Pro Number</td><td>784521372</td></tr>
+                <tr><td style="font-weight:600">Carrier</td><td>Schneider National (SNLU)</td></tr>
+                <tr><td style="font-weight:600">Shipper</td><td>ACME Corp (001-45892)</td></tr>
+                <tr><td style="font-weight:600">Origin</td><td>Detroit, MI 48201</td></tr>
+                <tr><td style="font-weight:600">Destination</td><td>Nashville, TN 37201</td></tr>
+                <tr><td style="font-weight:600">Ship Date</td><td>02/28/2026</td></tr>
+                <tr><td style="font-weight:600">Mode</td><td>Truckload (TL)</td></tr>
+                <tr><td style="font-weight:600">Weight</td><td>42,000 lbs</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <table class="data-table">
+              <tbody>
+                <tr><td style="font-weight:600;width:40%">Reject Code</td><td><span class="badge badge-danger">RC-04</span> Rate Discrepancy</td></tr>
+                <tr><td style="font-weight:600">Carrier Amount</td><td>$5,120.00</td></tr>
+                <tr><td style="font-weight:600">Audited Amount</td><td>$4,750.00</td></tr>
+                <tr><td style="font-weight:600">Difference</td><td style="color:#e74c3c;font-weight:700">$370.00</td></tr>
+                <tr><td style="font-weight:600">Reject Date</td><td>03/02/2026</td></tr>
+                <tr><td style="font-weight:600">Days Outstanding</td><td>2</td></tr>
+                <tr><td style="font-weight:600">Reference #</td><td>BOL-2026-44821</td></tr>
+                <tr><td style="font-weight:600">PO Number</td><td>PO-887421</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div style="margin-top:16px;padding-top:16px;border-top:1px solid #eee;display:flex;gap:8px;justify-content:flex-end">
+          <button class="btn btn-success">✅ Approve & Pay $5,120.00</button>
+          <button class="btn btn-warning">✏️ Modify & Approve</button>
+          <button class="btn btn-danger">❌ Reject to Carrier</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="portal-footer">
+    Copyright &copy; 2026 - Cass Information Systems, Inc. |
+    <a href="#">Privacy Policy</a> |
+    <a href="#">System Requirements</a> |
+    <a href="#">Transportation Indexes</a> |
+    <a href="#">Shipper Support</a> |
+    <a href="#">Carrier Support</a> |
+    <a href="#">Carrier Electronic Payments</a>
+    <span style="float:right">CassPort (v2.0.25252.60-6)</span>
+  </footer>
+
+  <div id="searchModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:2000;align-items:center;justify-content:center">
+    <div style="background:white;border-radius:8px;padding:24px;width:400px">
+      <h3 style="margin-bottom:16px">Search</h3>
+      <input type="text" class="form-control" placeholder="Search invoices, carriers..." autofocus>
+      <div style="margin-top:12px;text-align:right">
+        <button class="btn btn-secondary" onclick="document.getElementById('searchModal').style.display='none'">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    function switchAuthTab(el, tab) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById('tab-outstanding').classList.add('hidden');
+      document.getElementById('tab-resolved').classList.add('hidden');
+      document.getElementById('tab-authorized').classList.add('hidden');
+      document.getElementById('tab-' + tab).classList.remove('hidden');
+    }
+  </script>
+  <script>loadRejectsData();</script>
+</body>
+</html>

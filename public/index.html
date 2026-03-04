@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CassPort</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/login.css">
+</head>
+<body class="login-page">
+  <div class="login-container">
+    <div class="login-left">
+      <div class="login-image"></div>
+    </div>
+    <div class="login-right">
+      <div class="login-form-wrapper">
+        <div class="login-logo">
+          <svg viewBox="0 0 280 100" class="cassport-logo">
+            <text x="10" y="55" font-family="Georgia, serif" font-size="36" fill="white" font-style="italic">Cass</text>
+            <text x="110" y="70" font-family="Arial Black, sans-serif" font-size="52" fill="white" font-weight="900">Port</text>
+            <circle cx="262" cy="68" r="4" fill="none" stroke="white" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <p class="login-welcome">Welcome back! Please login to your account</p>
+        <form id="loginForm" onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Username" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Password" required>
+          </div>
+          <button type="submit" class="login-btn" onclick="handleLogin(event)">Login</button>
+          <div class="login-divider"></div>
+          <div class="login-links">
+            <a href="#">Forgot Password</a> |
+            <a href="#">Sign Up</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <footer class="login-footer">
+    <div class="footer-content">
+      <span>Copyright &copy; 2026 - Cass Information Systems, Inc.</span>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a> |
+        <a href="#">System Requirements</a> |
+        <a href="#">Transportation Indexes</a> |
+        <a href="#">Shipper Support</a> |
+        <a href="#">Carrier Support</a> |
+        <a href="#">Carrier Electronic Payments</a>
+      </div>
+      <span class="version">CassPort Authentication (v2.0.25252.60-6)</span>
+    </div>
+  </footer>
+  <script src="js/app.js"></script>
+</body>
+</html>

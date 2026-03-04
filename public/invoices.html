@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CassPort - Invoice Details</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- TOP NAVBAR -->
+  <nav class="top-navbar">
+    <div class="navbar-brand" onclick="location.href='dashboard.html'">
+      <svg viewBox="0 0 220 50" class="nav-logo">
+        <text x="5" y="30" font-family="Georgia, serif" font-size="22" fill="white" font-style="italic">Cass</text>
+        <text x="68" y="37" font-family="Arial Black, sans-serif" font-size="30" fill="white" font-weight="900">Port</text>
+        <circle cx="164" cy="36" r="3" fill="none" stroke="white" stroke-width="1"/>
+      </svg>
+    </div>
+    <ul class="navbar-nav">
+      <li><a href="payments.html">Upcoming Payments</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="reporting.html">Standard Reporting</a></li>
+      <li><a href="carriers.html">All Carriers</a></li>
+      <li><a href="authorization.html">Freight Bill Auth</a></li>
+      <li class="active"><a href="invoices.html">Invoice Details</a></li>
+      <li><a href="upload.html">Invoice Upload</a></li>
+    </ul>
+    <div class="navbar-right">
+      <span class="nav-icon" title="Help">&#9432;</span>
+      <span class="nav-icon" title="Messages">&#9993;</span>
+      <div class="user-menu">
+        <div class="user-avatar">FR</div>
+        <span>FRANKLIN RODRIGUEZ ▾</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <ul class="sidebar-nav">
+      <li><a href="payments.html"><span class="icon">&#8962;</span></a></li>
+      <li><a href="dashboard.html"><span class="icon">&#9776;</span></a></li>
+      <li><a href="upload.html"><span class="icon">&#128196;</span></a></li>
+      <li><a href="invoices.html" class="active"><span class="icon">&#128451;</span></a></li>
+      <li><a href="#" onclick="document.getElementById('searchModal').style.display='flex'"><span class="icon">&#128269;</span></a></li>
+    </ul>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1>Invoice Details</h1>
+        <div class="breadcrumb">Home / <a href="invoices.html">Invoice Details</a></div>
+      </div>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="panel">
+      <div class="panel-header">
+        <h2>Invoice Search</h2>
+      </div>
+      <div class="panel-body">
+        <div class="form-inline" style="gap:16px">
+          <div style="flex:1;min-width:180px">
+            <label class="form-label">Search By</label>
+            <select class="form-control">
+              <option>Pro Number</option>
+              <option>Invoice Number</option>
+              <option>BOL Number</option>
+              <option>PO Number</option>
+              <option>Reference Number</option>
+            </select>
+          </div>
+          <div style="flex:2;min-width:250px">
+            <label class="form-label">Search Value</label>
+            <input type="text" class="form-control" placeholder="Enter search value..." value="784521369">
+          </div>
+          <div style="flex:1;min-width:150px">
+            <label class="form-label">Shipper</label>
+            <select class="form-control">
+              <option>All Shippers</option>
+              <option selected>ACME Corp</option>
+              <option>Global Industries</option>
+              <option>Summit LLC</option>
+            </select>
+          </div>
+          <div style="display:flex;align-items:flex-end">
+            <button class="btn btn-primary">Search</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INVOICE DETAIL -->
+    <div class="panel">
+      <div class="panel-header">
+        <h2>Invoice Detail - Pro #784521369</h2>
+        <div class="panel-actions">
+          <button class="btn btn-secondary btn-sm">🖼️ View Image</button>
+          <button class="btn btn-secondary btn-sm">🖨️ Print</button>
+          <button class="btn btn-secondary btn-sm">📥 Download PDF</button>
+        </div>
+      </div>
+
+      <!-- Invoice Status Bar -->
+      <div style="display:flex;align-items:center;padding:12px 20px;background:#d4edda;border-bottom:1px solid #c3e6cb">
+        <span class="badge badge-success" style="font-size:13px;padding:5px 12px">PAID</span>
+        <span style="margin-left:12px;font-size:13px;color:#155724">Payment scheduled for 03/07/2026 | Check #847291</span>
+      </div>
+
+      <div class="panel-body">
+        <div class="grid-2">
+          <!-- Left: Shipment Info -->
+          <div>
+            <h3 style="font-size:14px;font-weight:600;color:#1a2332;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #eee">Shipment Information</h3>
+            <table class="data-table">
+              <tbody>
+                <tr><td style="font-weight:600;width:35%;color:#555">Pro Number</td><td>784521369</td></tr>
+                <tr><td style="font-weight:600;color:#555">Carrier</td><td>FedEx Freight (FXFE)</td></tr>
+                <tr><td style="font-weight:600;color:#555">Shipper</td><td>ACME Corp (001-45892)</td></tr>
+                <tr><td style="font-weight:600;color:#555">Bill of Lading</td><td>BOL-2026-44815</td></tr>
+                <tr><td style="font-weight:600;color:#555">PO Number</td><td>PO-887415</td></tr>
+                <tr><td style="font-weight:600;color:#555">Ship Date</td><td>02/28/2026</td></tr>
+                <tr><td style="font-weight:600;color:#555">Delivery Date</td><td>03/02/2026</td></tr>
+                <tr><td style="font-weight:600;color:#555">Mode</td><td>LTL</td></tr>
+                <tr><td style="font-weight:600;color:#555">Service Level</td><td>Standard</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Right: Location & Financial -->
+          <div>
+            <h3 style="font-size:14px;font-weight:600;color:#1a2332;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #eee">Location & Financial Details</h3>
+            <table class="data-table">
+              <tbody>
+                <tr><td style="font-weight:600;width:35%;color:#555">Origin</td><td>Chicago, IL 60601</td></tr>
+                <tr><td style="font-weight:600;color:#555">Destination</td><td>Dallas, TX 75201</td></tr>
+                <tr><td style="font-weight:600;color:#555">Weight</td><td>4,250 lbs</td></tr>
+                <tr><td style="font-weight:600;color:#555">Pieces</td><td>12</td></tr>
+                <tr><td style="font-weight:600;color:#555">Class</td><td>85</td></tr>
+                <tr><td style="font-weight:600;color:#555">Carrier Amount</td><td>$1,971.80</td></tr>
+                <tr><td style="font-weight:600;color:#555">Audit Adjustment</td><td style="color:#27ae60;font-weight:600">-$124.30</td></tr>
+                <tr><td style="font-weight:600;color:#555">Approved Amount</td><td style="font-weight:700;font-size:16px">$1,847.50</td></tr>
+                <tr><td style="font-weight:600;color:#555">Payment Date</td><td>03/07/2026</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Charge Breakdown -->
+        <h3 style="font-size:14px;font-weight:600;color:#1a2332;margin:24px 0 12px;padding-bottom:8px;border-bottom:1px solid #eee">Charge Breakdown</h3>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Charge Description</th>
+              <th>Carrier Charged</th>
+              <th>Audited Amount</th>
+              <th>Adjustment</th>
+              <th>Reason</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Line Haul</td>
+              <td>$1,650.00</td>
+              <td>$1,580.00</td>
+              <td style="color:#27ae60">-$70.00</td>
+              <td>Rate correction per contract ACME-2025-LTL</td>
+            </tr>
+            <tr>
+              <td>Fuel Surcharge (28.5%)</td>
+              <td>$247.80</td>
+              <td>$197.50</td>
+              <td style="color:#27ae60">-$50.30</td>
+              <td>FSC recalculated on corrected line haul</td>
+            </tr>
+            <tr>
+              <td>Liftgate Delivery</td>
+              <td>$45.00</td>
+              <td>$45.00</td>
+              <td>$0.00</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>Inside Delivery</td>
+              <td>$29.00</td>
+              <td>$25.00</td>
+              <td style="color:#27ae60">-$4.00</td>
+              <td>Contract rate applied</td>
+            </tr>
+            <tr style="background:#f8f9fa;font-weight:600">
+              <td>Total</td>
+              <td>$1,971.80</td>
+              <td>$1,847.50</td>
+              <td style="color:#27ae60">-$124.30</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Audit Trail -->
+        <h3 style="font-size:14px;font-weight:600;color:#1a2332;margin:24px 0 12px;padding-bottom:8px;border-bottom:1px solid #eee">Audit Trail</h3>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Date/Time</th>
+              <th>Action</th>
+              <th>User</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>03/04/2026 09:15 AM</td>
+              <td><span class="badge badge-success">Payment Scheduled</span></td>
+              <td>System</td>
+              <td>Check #847291 scheduled for 03/07/2026</td>
+            </tr>
+            <tr>
+              <td>03/03/2026 02:30 PM</td>
+              <td><span class="badge badge-primary">Approved</span></td>
+              <td>System (Auto)</td>
+              <td>Auto-approved after audit - within tolerance</td>
+            </tr>
+            <tr>
+              <td>03/03/2026 10:45 AM</td>
+              <td><span class="badge badge-info">Audited</span></td>
+              <td>Cass Audit</td>
+              <td>Rate correction applied: -$124.30</td>
+            </tr>
+            <tr>
+              <td>03/02/2026 08:00 AM</td>
+              <td><span class="badge badge-warning">Received</span></td>
+              <td>EDI</td>
+              <td>Invoice received via EDI from FXFE</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <footer class="portal-footer">
+    Copyright &copy; 2026 - Cass Information Systems, Inc. |
+    <a href="#">Privacy Policy</a> |
+    <a href="#">System Requirements</a> |
+    <a href="#">Transportation Indexes</a> |
+    <a href="#">Shipper Support</a> |
+    <a href="#">Carrier Support</a> |
+    <a href="#">Carrier Electronic Payments</a>
+    <span style="float:right">CassPort (v2.0.25252.60-6)</span>
+  </footer>
+
+  <div id="searchModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:2000;align-items:center;justify-content:center">
+    <div style="background:white;border-radius:8px;padding:24px;width:400px">
+      <h3 style="margin-bottom:16px">Search</h3>
+      <input type="text" class="form-control" placeholder="Search invoices, carriers..." autofocus>
+      <div style="margin-top:12px;text-align:right">
+        <button class="btn btn-secondary" onclick="document.getElementById('searchModal').style.display='none'">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
