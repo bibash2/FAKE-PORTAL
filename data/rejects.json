@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "invoiceId": 4,
+    "proNumber": "784521372",
+    "carrier": "Schneider National",
+    "shipper": "AHLSTROM MOVERS",
+    "rejectCode": "RC-04",
+    "rejectReason": "Rate Discrepancy",
+    "originalAmount": 4750,
+    "carrierAmount": 5120,
+    "difference": 370,
+    "rejectDate": "2026-03-02",
+    "status": "outstanding"
+  },
+  {
+    "id": 2,
+    "invoiceId": 12,
+    "proNumber": "784521380",
+    "carrier": "ABF Freight",
+    "shipper": "AHLSTROM MOVERS",
+    "rejectCode": "RC-02",
+    "rejectReason": "Duplicate Invoice",
+    "originalAmount": 1240,
+    "carrierAmount": 1240,
+    "difference": 0,
+    "rejectDate": "2026-03-01",
+    "status": "outstanding"
+  },
+  {
+    "id": 3,
+    "invoiceId": 5,
+    "proNumber": "784521385",
+    "carrier": "UPS Freight",
+    "shipper": "AHLSTROM MOVERS",
+    "rejectCode": "RC-07",
+    "rejectReason": "Missing BOL",
+    "originalAmount": 2890.5,
+    "carrierAmount": 2890.5,
+    "difference": 0,
+    "rejectDate": "2026-02-28",
+    "status": "outstanding"
+  },
+  {
+    "id": 4,
+    "invoiceId": 11,
+    "proNumber": "784521389",
+    "carrier": "FedEx Freight",
+    "shipper": "AHLSTROM MOVERS",
+    "rejectCode": "RC-01",
+    "rejectReason": "Weight Discrepancy",
+    "originalAmount": 1580,
+    "carrierAmount": 1820,
+    "difference": 240,
+    "rejectDate": "2026-02-27",
+    "status": "outstanding"
+  },
+  {
+    "id": 5,
+    "invoiceId": 13,
+    "proNumber": "784521392",
+    "carrier": "XPO Logistics",
+    "shipper": "AHLSTROM MOVERS",
+    "rejectCode": "RC-04",
+    "rejectReason": "Rate Discrepancy",
+    "originalAmount": 3200,
+    "carrierAmount": 3450,
+    "difference": 250,
+    "rejectDate": "2026-02-26",
+    "status": "outstanding"
+  }
+]

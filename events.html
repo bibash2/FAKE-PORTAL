@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CassPort - Events & Audit Log</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <nav class="top-navbar">
+    <div class="navbar-brand" onclick="location.href='payments.html'">
+      <svg viewBox="0 0 220 50" class="nav-logo">
+        <text x="5" y="30" font-family="Georgia, serif" font-size="22" fill="white" font-style="italic">Cass</text>
+        <text x="68" y="37" font-family="Arial Black, sans-serif" font-size="30" fill="white" font-weight="900">Port</text>
+        <circle cx="164" cy="36" r="3" fill="none" stroke="white" stroke-width="1"/>
+      </svg>
+    </div>
+    <ul class="navbar-nav">
+      <li><a href="payments.html">Upcoming Payments</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="reporting.html">Standard Reporting ▾</a></li>
+      <li><a href="carriers.html">All Carriers</a></li>
+      <li><a href="authorization.html">Freight Bill Auth</a></li>
+      <li><a href="invoices.html">Invoice Details</a></li>
+      <li><a href="upload.html">Invoice Upload</a></li>
+    </ul>
+    <div class="navbar-right">
+      <span class="nav-icon" title="Help">&#9432;</span>
+      <span class="nav-icon" title="Messages">&#9993;</span>
+      <div class="user-menu">
+        <div class="user-avatar">FR</div>
+        <span>FRANKLIN RODRIGUEZ ▾</span>
+      </div>
+    </div>
+  </nav>
+
+  <aside class="sidebar">
+    <ul class="sidebar-nav">
+      <li><a href="payments.html"><span class="icon">&#8962;</span></a></li>
+      <li><a href="dashboard.html"><span class="icon">&#9776;</span></a></li>
+      <li><a href="upload.html"><span class="icon">&#128196;</span></a></li>
+      <li><a href="invoices.html"><span class="icon">&#128451;</span></a></li>
+      <li><a href="#"><span class="icon">&#128269;</span></a></li>
+    </ul>
+  </aside>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1>Events & Audit Log</h1>
+        <div class="breadcrumb">Home / <a href="events.html">Events</a></div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-primary" onclick="document.getElementById('addEventModal').style.display='flex'">+ Add Event</button>
+        <button class="btn btn-secondary" onclick="loadEvents()">Refresh</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <h2>Recent Events</h2>
+        <div class="panel-actions">
+          <select class="form-control" style="width:150px" id="eventTypeFilter" onchange="loadEvents()">
+            <option value="">All Types</option>
+            <option value="upload">Upload</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+            <option value="payment">Payment</option>
+            <option value="note">Note</option>
+          </select>
+          <button class="btn btn-secondary btn-sm">Export</button>
+        </div>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Date/Time</th>
+            <th>Type</th>
+            <th>Action</th>
+            <th>User</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody id="eventsTableBody">
+          <tr><td colspan="5" style="text-align:center;padding:20px;color:#777">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- Add Event Modal -->
+  <div id="addEventModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:2000;align-items:center;justify-content:center">
+    <div style="background:white;border-radius:8px;padding:24px;width:500px;max-width:90vw">
+      <h3 style="margin-bottom:16px;font-size:18px;color:#1a2332">Add Event</h3>
+      <div style="margin-bottom:12px">
+        <label class="form-label">Event Type</label>
+        <select class="form-control" id="newEventType">
+          <option value="note">Note</option>
+          <option value="upload">Upload</option>
+          <option value="payment">Payment</option>
+          <option value="status_change">Status Change</option>
+        </select>
+      </div>
+      <div style="margin-bottom:12px">
+        <label class="form-label">Action Description</label>
+        <input type="text" class="form-control" id="newEventAction" placeholder="Describe the action...">
+      </div>
+      <div style="margin-bottom:12px">
+        <label class="form-label">Invoice ID (optional)</label>
+        <input type="number" class="form-control" id="newEventInvoiceId" placeholder="Invoice ID">
+      </div>
+      <div style="margin-bottom:12px">
+        <label class="form-label">Notes</label>
+        <textarea class="form-control" id="newEventNotes" rows="3" placeholder="Additional notes..."></textarea>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end">
+        <button class="btn btn-secondary" onclick="document.getElementById('addEventModal').style.display='none'">Cancel</button>
+        <button class="btn btn-primary" onclick="addEvent()">Add Event</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="portal-footer">
+    Copyright &copy; 2026 - Cass Information Systems, Inc. |
+    <a href="#">Privacy Policy</a> |
+    <a href="#">System Requirements</a> |
+    <a href="#">Transportation Indexes</a> |
+    <a href="#">Shipper Support</a> |
+    <a href="#">Carrier Support</a> |
+    <a href="#">Carrier Electronic Payments</a>
+    <span style="float:right">CassPort (v2.0.25252.60-6)</span>
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script>
+    loadEvents();
+
+    async function addEvent() {
+      const type = document.getElementById('newEventType').value;
+      const action = document.getElementById('newEventAction').value;
+      const invoiceId = document.getElementById('newEventInvoiceId').value;
+      const notes = document.getElementById('newEventNotes').value;
+
+      if (!action) { alert('Please enter an action description'); return; }
+
+      try {
+        await fetch('/api/events', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            type,
+            action,
+            invoiceId: invoiceId ? parseInt(invoiceId) : null,
+            user: 'FRANKLIN RODRIGUEZ',
+            notes
+          })
+        });
+        document.getElementById('addEventModal').style.display = 'none';
+        document.getElementById('newEventAction').value = '';
+        document.getElementById('newEventInvoiceId').value = '';
+        document.getElementById('newEventNotes').value = '';
+        loadEvents();
+      } catch (e) {
+        alert('Failed to add event');
+      }
+    }
+  </script>
+</body>
+</html>

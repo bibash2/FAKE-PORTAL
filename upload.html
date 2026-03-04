@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CassPort - Invoice Upload</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <nav class="top-navbar">
+    <div class="navbar-brand" onclick="location.href='payments.html'">
+      <svg viewBox="0 0 220 50" class="nav-logo">
+        <text x="5" y="30" font-family="Georgia, serif" font-size="22" fill="white" font-style="italic">Cass</text>
+        <text x="68" y="37" font-family="Arial Black, sans-serif" font-size="30" fill="white" font-weight="900">Port</text>
+        <circle cx="164" cy="36" r="3" fill="none" stroke="white" stroke-width="1"/>
+      </svg>
+    </div>
+    <ul class="navbar-nav">
+      <li><a href="payments.html">Upcoming Payments</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="reporting.html">Standard Reporting ▾</a></li>
+      <li><a href="carriers.html">All Carriers</a></li>
+      <li><a href="authorization.html">Freight Bill Auth</a></li>
+      <li><a href="invoices.html">Invoice Details</a></li>
+      <li class="active"><a href="upload.html">Invoice Upload</a></li>
+    </ul>
+    <div class="navbar-right">
+      <span class="nav-icon" title="Help">&#9432;</span>
+      <span class="nav-icon" title="Messages">&#9993;</span>
+      <div class="user-menu">
+        <div class="user-avatar">FR</div>
+        <span>FRANKLIN RODRIGUEZ ▾</span>
+      </div>
+    </div>
+  </nav>
+
+  <aside class="sidebar">
+    <ul class="sidebar-nav">
+      <li><a href="payments.html"><span class="icon">&#8962;</span></a></li>
+      <li><a href="dashboard.html"><span class="icon">&#9776;</span></a></li>
+      <li><a href="upload.html" class="active"><span class="icon">&#128196;</span></a></li>
+      <li><a href="invoices.html"><span class="icon">&#128451;</span></a></li>
+      <li><a href="#" onclick="document.getElementById('searchModal').style.display='flex'"><span class="icon">&#128269;</span></a></li>
+    </ul>
+  </aside>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1>Invoice Upload</h1>
+        <div class="breadcrumb">Home / <a href="upload.html">Invoice Upload</a></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <h2>Last 24 Hour Upload History</h2>
+      </div>
+      <table class="data-table" id="uploadHistoryTable">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Account</th>
+            <th>Image Count</th>
+            <th>Upload Date</th>
+          </tr>
+        </thead>
+        <tbody id="uploadHistoryBody">
+          <tr><td colspan="4" style="text-align:center;padding:20px;color:#777">Loading...</td></tr>
+        </tbody>
+      </table>
+
+      <div style="margin-top:16px;padding:0 16px">
+        <table class="data-table" id="uploadFilesTable">
+          <thead>
+            <tr>
+              <th>File Name</th>
+              <th>File Size (KB)</th>
+              <th>Barcode</th>
+              <th>Upload Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="uploadFilesBody">
+            <tr><td colspan="5" style="text-align:center;padding:20px;color:#777">No files uploaded yet</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="padding:16px;display:flex;gap:12px">
+        <button class="btn btn-success" onclick="document.getElementById('uploadModal').style.display='flex'">+ Add Invoice Upload</button>
+        <button class="btn btn-danger" id="uploadInvoiceBtn" onclick="submitUpload()" disabled>Upload Invoice</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Upload Modal -->
+  <div id="uploadModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:2000;align-items:center;justify-content:center">
+    <div style="background:white;border-radius:8px;padding:24px;width:500px;max-width:90vw">
+      <h3 style="margin-bottom:16px;font-size:18px;color:#1a2332">Upload Invoice Document</h3>
+      <form id="uploadForm" enctype="multipart/form-data">
+        <div style="margin-bottom:12px">
+          <label class="form-label">Account</label>
+          <select class="form-control" id="uploadAccount">
+            <option value="210800 AHLSTROM MOVERS">210800 AHLSTROM MOVERS</option>
+            <option value="210801 GLOBAL INDUSTRIES">210801 GLOBAL INDUSTRIES</option>
+            <option value="210802 SUMMIT LLC">210802 SUMMIT LLC</option>
+          </select>
+        </div>
+        <div style="margin-bottom:12px">
+          <label class="form-label">Barcode / Reference</label>
+          <input type="text" class="form-control" id="uploadBarcode" placeholder="Enter barcode or reference...">
+        </div>
+        <div style="margin-bottom:12px">
+          <label class="form-label">Invoice File</label>
+          <input type="file" class="form-control" id="uploadFile" accept=".pdf,.jpg,.jpeg,.png,.tiff,.tif" style="padding:8px">
+        </div>
+        <div style="margin-bottom:12px">
+          <label class="form-label">Notes</label>
+          <textarea class="form-control" id="uploadNotes" rows="3" placeholder="Optional notes..."></textarea>
+        </div>
+        <div style="display:flex;gap:8px;justify-content:flex-end">
+          <button type="button" class="btn btn-secondary" onclick="document.getElementById('uploadModal').style.display='none'">Cancel</button>
+          <button type="button" class="btn btn-primary" onclick="doUpload()">Upload</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="searchModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:2000;align-items:center;justify-content:center">
+    <div style="background:white;border-radius:8px;padding:24px;width:400px">
+      <h3 style="margin-bottom:16px">Search</h3>
+      <input type="text" class="form-control" placeholder="Search invoices, carriers..." autofocus>
+      <div style="margin-top:12px;text-align:right">
+        <button class="btn btn-secondary" onclick="document.getElementById('searchModal').style.display='none'">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="portal-footer">
+    Copyright &copy; 2026 - Cass Information Systems, Inc. |
+    <a href="#">Privacy Policy</a> |
+    <a href="#">System Requirements</a> |
+    <a href="#">Transportation Indexes</a> |
+    <a href="#">Shipper Support</a> |
+    <a href="#">Carrier Support</a> |
+    <a href="#">Carrier Electronic Payments</a>
+    <span style="float:right">Invoice Upload v4.1.25425.5 65</span>
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script>
+    loadUploadHistory();
+
+    async function loadUploadHistory() {
+      try {
+        const res = await fetch('/api/uploads/history');
+        const data = await res.json();
+        const histBody = document.getElementById('uploadHistoryBody');
+        const filesBody = document.getElementById('uploadFilesBody');
+
+        if (data.history.length === 0) {
+          histBody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:20px;color:#777">No uploads in last 24 hours</td></tr>';
+        } else {
+          histBody.innerHTML = data.history.map((h, i) => `
+            <tr>
+              <td><span style="color:#4a9af5;cursor:pointer">&#9654;</span></td>
+              <td>${h.account}</td>
+              <td>${h.imageCount}</td>
+              <td>${new Date(h.uploadDate).toLocaleString()}</td>
+            </tr>
+          `).join('');
+        }
+
+        if (data.files.length === 0) {
+          filesBody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:#777">No files uploaded yet</td></tr>';
+        } else {
+          filesBody.innerHTML = data.files.map(f => `
+            <tr>
+              <td><a href="${f.path}" target="_blank" style="color:#4a9af5">${f.fileName}</a></td>
+              <td>${f.fileSize}</td>
+              <td>${f.barcode || '—'}</td>
+              <td>${new Date(f.uploadDate).toLocaleString()}</td>
+              <td><button class="btn btn-danger btn-sm" onclick="deleteUpload(${f.id})">Delete</button></td>
+            </tr>
+          `).join('');
+          document.getElementById('uploadInvoiceBtn').disabled = false;
+        }
+      } catch (e) {
+        console.error('Failed to load upload history:', e);
+      }
+    }
+
+    async function doUpload() {
+      const fileInput = document.getElementById('uploadFile');
+      if (!fileInput.files.length) { alert('Please select a file'); return; }
+
+      const formData = new FormData();
+      formData.append('file', fileInput.files[0]);
+      formData.append('account', document.getElementById('uploadAccount').value);
+      formData.append('barcode', document.getElementById('uploadBarcode').value);
+      formData.append('notes', document.getElementById('uploadNotes').value);
+      formData.append('docType', 'invoice');
+
+      try {
+        const res = await fetch('/api/uploads/invoice?type=invoices', { method: 'POST', body: formData });
+        if (res.ok) {
+          document.getElementById('uploadModal').style.display = 'none';
+          document.getElementById('uploadForm').reset();
+          loadUploadHistory();
+          logEvent('upload', 'Invoice document uploaded');
+        } else {
+          alert('Upload failed');
+        }
+      } catch (e) {
+        alert('Upload error: ' + e.message);
+      }
+    }
+
+    async function deleteUpload(id) {
+      if (!confirm('Delete this upload?')) return;
+      await fetch(`/api/documents/${id}`, { method: 'DELETE' });
+      loadUploadHistory();
+    }
+
+    function submitUpload() {
+      alert('Invoices submitted for processing');
+    }
+
+    async function logEvent(type, action) {
+      await fetch('/api/events', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type, action, user: 'FRANKLIN RODRIGUEZ' })
+      });
+    }
+  </script>
+</body>
+</html>

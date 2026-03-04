@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CassPort - Standard Reporting</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- TOP NAVBAR -->
+  <nav class="top-navbar">
+    <div class="navbar-brand" onclick="location.href='dashboard.html'">
+      <svg viewBox="0 0 220 50" class="nav-logo">
+        <text x="5" y="30" font-family="Georgia, serif" font-size="22" fill="white" font-style="italic">Cass</text>
+        <text x="68" y="37" font-family="Arial Black, sans-serif" font-size="30" fill="white" font-weight="900">Port</text>
+        <circle cx="164" cy="36" r="3" fill="none" stroke="white" stroke-width="1"/>
+      </svg>
+    </div>
+    <ul class="navbar-nav">
+      <li><a href="payments.html">Upcoming Payments</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li class="active"><a href="reporting.html">Standard Reporting</a></li>
+      <li><a href="carriers.html">All Carriers</a></li>
+      <li><a href="authorization.html">Freight Bill Auth</a></li>
+      <li><a href="invoices.html">Invoice Details</a></li>
+      <li><a href="upload.html">Invoice Upload</a></li>
+    </ul>
+    <div class="navbar-right">
+      <span class="nav-icon" title="Help">&#9432;</span>
+      <span class="nav-icon" title="Messages">&#9993;</span>
+      <div class="user-menu">
+        <div class="user-avatar">FR</div>
+        <span>FRANKLIN RODRIGUEZ ▾</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <ul class="sidebar-nav">
+      <li><a href="payments.html"><span class="icon">&#8962;</span></a></li>
+      <li><a href="dashboard.html"><span class="icon">&#9776;</span></a></li>
+      <li><a href="upload.html"><span class="icon">&#128196;</span></a></li>
+      <li><a href="invoices.html"><span class="icon">&#128451;</span></a></li>
+      <li><a href="#" onclick="document.getElementById('searchModal').style.display='flex'"><span class="icon">&#128269;</span></a></li>
+    </ul>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1>Standard Reporting - Processed Activity</h1>
+        <div class="breadcrumb">Home / <a href="reporting.html">Standard Reporting</a> / Processed Activity</div>
+      </div>
+    </div>
+
+    <!-- REPORT SELECTION -->
+    <div class="panel">
+      <div class="panel-header">
+        <h2>Internet Reporting Services - Standard Reporting</h2>
+      </div>
+      <div class="panel-body">
+        <div class="tabs">
+          <div class="tab active" onclick="switchReportTab(this, 'daily')">Processed Activity - Daily</div>
+          <div class="tab" onclick="switchReportTab(this, 'monthly')">Processed Activity - Monthly</div>
+          <div class="tab" onclick="switchReportTab(this, 'other')">Processed Activity - Other Period</div>
+        </div>
+
+        <!-- Date & Shipper Selection -->
+        <div class="filter-bar" style="background:white;border:1px solid #e0e0e0;border-radius:6px;padding:20px;margin-bottom:20px">
+          <div style="flex:1;min-width:200px">
+            <label class="form-label">Report Date</label>
+            <input type="date" class="form-control" value="2026-03-04" id="reportDate">
+          </div>
+          <div id="dateRangeEnd" class="hidden" style="flex:1;min-width:200px">
+            <label class="form-label">End Date</label>
+            <input type="date" class="form-control" value="2026-03-04">
+          </div>
+          <div style="flex:2;min-width:300px">
+            <label class="form-label">Shipper(s)</label>
+            <select class="form-control" multiple size="3" id="shipperSelect">
+              <option selected>ACME Corp (001-45892)</option>
+              <option selected>Global Industries (001-67234)</option>
+              <option>Summit LLC (001-89012)</option>
+            </select>
+            <span style="font-size:11px;color:#999">Hold Ctrl/Cmd to select multiple</span>
+          </div>
+          <div style="display:flex;align-items:flex-end">
+            <button class="btn btn-primary" onclick="runReport()">Run Report</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REPORT RESULTS -->
+    <div class="panel" id="reportResults">
+      <div class="panel-header">
+        <h2>Processed Activity Report - Daily | March 4, 2026</h2>
+        <div class="panel-actions">
+          <button class="btn btn-secondary btn-sm">🖨️ Print</button>
+          <button class="btn btn-secondary btn-sm">📥 Export CSV</button>
+          <button class="btn btn-secondary btn-sm">📊 Export Excel</button>
+        </div>
+      </div>
+
+      <!-- Summary Stats -->
+      <div style="display:flex;gap:0;border-bottom:1px solid #eee">
+        <div style="flex:1;padding:16px 20px;border-right:1px solid #eee;text-align:center">
+          <div style="font-size:11px;color:#777;text-transform:uppercase;letter-spacing:0.5px">Total Bills</div>
+          <div style="font-size:22px;font-weight:700;color:#1a2332;margin-top:4px">487</div>
+        </div>
+        <div style="flex:1;padding:16px 20px;border-right:1px solid #eee;text-align:center">
+          <div style="font-size:11px;color:#777;text-transform:uppercase;letter-spacing:0.5px">Total Charges</div>
+          <div style="font-size:22px;font-weight:700;color:#1a2332;margin-top:4px">$142,847.30</div>
+        </div>
+        <div style="flex:1;padding:16px 20px;border-right:1px solid #eee;text-align:center">
+          <div style="font-size:11px;color:#777;text-transform:uppercase;letter-spacing:0.5px">Audit Savings</div>
+          <div style="font-size:22px;font-weight:700;color:#27ae60;margin-top:4px">$8,234.50</div>
+        </div>
+        <div style="flex:1;padding:16px 20px;text-align:center">
+          <div style="font-size:11px;color:#777;text-transform:uppercase;letter-spacing:0.5px">Reject Rate</div>
+          <div style="font-size:22px;font-weight:700;color:#e74c3c;margin-top:4px">2.87%</div>
+        </div>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Pro Number</th>
+            <th>Carrier</th>
+            <th>Shipper</th>
+            <th>Origin</th>
+            <th>Destination</th>
+            <th>Mode</th>
+            <th>Weight (lbs)</th>
+            <th>Charges</th>
+            <th>Audit Adj.</th>
+            <th>Pay Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="color:#4a9af5;cursor:pointer">784521369</td>
+            <td>FedEx Freight</td>
+            <td>ACME Corp</td>
+            <td>Chicago, IL</td>
+            <td>Dallas, TX</td>
+            <td>LTL</td>
+            <td>4,250</td>
+            <td>$1,847.50</td>
+            <td style="color:#27ae60">-$124.30</td>
+            <td>03/07/2026</td>
+            <td><span class="badge badge-success">Approved</span></td>
+          </tr>
+          <tr>
+            <td style="color:#4a9af5;cursor:pointer">784521370</td>
+            <td>XPO Logistics</td>
+            <td>ACME Corp</td>
+            <td>Atlanta, GA</td>
+            <td>Miami, FL</td>
+            <td>LTL</td>
+            <td>2,100</td>
+            <td>$892.00</td>
+            <td>$0.00</td>
+            <td>03/07/2026</td>
+            <td><span class="badge badge-success">Approved</span></td>
+          </tr>
+          <tr>
+            <td style="color:#4a9af5;cursor:pointer">784521371</td>
+            <td>Old Dominion</td>
+            <td>Global Industries</td>
+            <td>Los Angeles, CA</td>
+            <td>Phoenix, AZ</td>
+            <td>LTL</td>
+            <td>6,800</td>
+            <td>$2,340.00</td>
+            <td style="color:#27ae60">-$87.00</td>
+            <td>03/07/2026</td>
+            <td><span class="badge badge-success">Approved</span></td>
+          </tr>
+          <tr>
+            <td style="color:#4a9af5;cursor:pointer">784521372</td>
+            <td>Schneider National</td>
+            <td>ACME Corp</td>
+            <td>Detroit, MI</td>
+            <td>Nashville, TN</td>
+            <td>TL</td>
+            <td>42,000</td>
+            <td>$4,750.00</td>
+            <td style="color:#e74c3c">REJECTED</td>
+            <td>—</td>
+            <td><span class="badge badge-danger">Rejected</span></td>
+          </tr>
+          <tr>
+            <td style="color:#4a9af5;cursor:pointer">784521373</td>
+            <td>UPS Freight</td>
+            <td>Global Industries</td>
+            <td>New York, NY</td>
+            <td>Boston, MA</td>
+            <td>Parcel</td>
+            <td>85</td>
+            <td>$142.30</td>
+            <td>$0.00</td>
+            <td>03/06/2026</td>
+            <td><span class="badge badge-success">Approved</span></td>
+          </tr>
+          <tr>
+            <td style="color:#4a9af5;cursor:pointer">784521374</td>
+            <td>Estes Express</td>
+            <td>ACME Corp</td>
+            <td>Charlotte, NC</td>
+            <td>Richmond, VA</td>
+            <td>LTL</td>
+            <td>3,400</td>
+            <td>$1,287.20</td>
+            <td style="color:#27ae60">-$45.00</td>
+            <td>03/07/2026</td>
+            <td><span class="badge badge-success">Approved</span></td>
+          </tr>
+          <tr>
+            <td style="color:#4a9af5;cursor:pointer">784521375</td>
+            <td>J.B. Hunt</td>
+            <td>Summit LLC</td>
+            <td>Memphis, TN</td>
+            <td>St. Louis, MO</td>
+            <td>Intermodal</td>
+            <td>38,000</td>
+            <td>$3,920.00</td>
+            <td>$0.00</td>
+            <td>03/08/2026</td>
+            <td><span class="badge badge-info">Processing</span></td>
+          </tr>
+          <tr>
+            <td style="color:#4a9af5;cursor:pointer">784521376</td>
+            <td>SAIA Inc</td>
+            <td>ACME Corp</td>
+            <td>Houston, TX</td>
+            <td>Denver, CO</td>
+            <td>LTL</td>
+            <td>5,200</td>
+            <td>$2,150.80</td>
+            <td style="color:#27ae60">-$67.50</td>
+            <td>03/07/2026</td>
+            <td><span class="badge badge-success">Approved</span></td>
+          </tr>
+          <tr>
+            <td style="color:#4a9af5;cursor:pointer">784521377</td>
+            <td>ABF Freight</td>
+            <td>Global Industries</td>
+            <td>Portland, OR</td>
+            <td>Seattle, WA</td>
+            <td>LTL</td>
+            <td>1,800</td>
+            <td>$687.50</td>
+            <td>$0.00</td>
+            <td>03/06/2026</td>
+            <td><span class="badge badge-success">Approved</span></td>
+          </tr>
+          <tr>
+            <td style="color:#4a9af5;cursor:pointer">784521378</td>
+            <td>Werner Enterprises</td>
+            <td>Summit LLC</td>
+            <td>Kansas City, MO</td>
+            <td>Indianapolis, IN</td>
+            <td>TL</td>
+            <td>44,000</td>
+            <td>$3,580.00</td>
+            <td style="color:#27ae60">-$210.00</td>
+            <td>03/08/2026</td>
+            <td><span class="badge badge-warning">Pending</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="padding:12px 20px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid #eee">
+        <span style="font-size:12px;color:#777">Showing 1-10 of 487 records</span>
+        <div class="pagination">
+          <button>‹</button>
+          <button class="active">1</button>
+          <button>2</button>
+          <button>3</button>
+          <button>4</button>
+          <button>...</button>
+          <button>49</button>
+          <button>›</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="portal-footer">
+    Copyright &copy; 2026 - Cass Information Systems, Inc. |
+    <a href="#">Privacy Policy</a> |
+    <a href="#">System Requirements</a> |
+    <a href="#">Transportation Indexes</a> |
+    <a href="#">Shipper Support</a> |
+    <a href="#">Carrier Support</a> |
+    <a href="#">Carrier Electronic Payments</a>
+    <span style="float:right">CassPort (v2.0.25252.60-6)</span>
+  </footer>
+
+  <div id="searchModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:2000;align-items:center;justify-content:center">
+    <div style="background:white;border-radius:8px;padding:24px;width:400px">
+      <h3 style="margin-bottom:16px">Search</h3>
+      <input type="text" class="form-control" placeholder="Search invoices, carriers..." autofocus>
+      <div style="margin-top:12px;text-align:right">
+        <button class="btn btn-secondary" onclick="document.getElementById('searchModal').style.display='none'">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    function switchReportTab(el, type) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      const dateEnd = document.getElementById('dateRangeEnd');
+      if (type === 'other') {
+        dateEnd.classList.remove('hidden');
+      } else {
+        dateEnd.classList.add('hidden');
+      }
+    }
+
+    function runReport() {
+      document.getElementById('reportResults').scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>

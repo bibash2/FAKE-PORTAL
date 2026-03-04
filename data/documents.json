@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "invoiceId": null,
+    "docType": "invoice",
+    "account": "210800 AHLSTROM MOVERS",
+    "name": "20b0cf52_dummy.pdf",
+    "originalName": "20b0cf52_dummy.pdf",
+    "filename": "1772604225996-20b0cf52_dummy.pdf",
+    "path": "/uploads/invoices/1772604225996-20b0cf52_dummy.pdf",
+    "size": 13264,
+    "mimeType": "application/pdf",
+    "barcode": "jkhkhk",
+    "uploadedBy": "FRANKLIN RODRIGUEZ",
+    "uploadedAt": "2026-03-04T06:03:46.000Z",
+    "notes": "kjhkhjk"
+  }
+]
