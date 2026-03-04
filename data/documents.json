@@ -1,5 +1,21 @@
 [
   {
+    "id": 2,
+    "invoiceId": null,
+    "docType": "invoice",
+    "account": "210802 SUMMIT LLC",
+    "name": "20b0cf52_dummy.pdf",
+    "originalName": "20b0cf52_dummy.pdf",
+    "filename": "1772604424957-20b0cf52_dummy.pdf",
+    "path": "/uploads/invoices/1772604424957-20b0cf52_dummy.pdf",
+    "size": 13264,
+    "mimeType": "application/pdf",
+    "barcode": "jkkjklj",
+    "uploadedBy": "FRANKLIN RODRIGUEZ",
+    "uploadedAt": "2026-03-04T06:07:04.960Z",
+    "notes": "khkk"
+  },
+  {
     "id": 1,
     "invoiceId": null,
     "docType": "invoice",
